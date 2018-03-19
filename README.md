@@ -12,3 +12,8 @@ or composer.json:
   "grozzzny/lang": "dev-master"
 }
 ```
+
+Run migrations
+```bash
+php yii migrate --migrationPath=@vendor/grozzzny/lang/migrations
+```
