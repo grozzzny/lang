@@ -1,6 +1,7 @@
 <?php
 namespace grozzzny\lang\components;
 
+use Yii;
 use yii\web\UrlManager;
 use grozzzny\lang\models\Lang;
 
@@ -24,11 +25,12 @@ class LangUrlManager extends UrlManager
         //Получаем сформированный URL(без префикса идентификатора языка)
         $url = parent::createUrl($params);
 
-        //Добавляем к URL префикс - буквенный идентификатор языка
-        if ($url == '/') {
-            return '/' . $lang->url;
+        $lang_url = Lang::getDefaultLang()->url == $lang->url ? '' : $lang->url;
+
+        if($url == '/') {
+            return '/' . $lang_url;
         } else {
-            return '/' . $lang->url . $url;
+            return empty($lang_url) ? $lang_url . $url : '/' . $lang_url . $url;
         }
     }
 }
