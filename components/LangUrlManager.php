@@ -7,25 +7,35 @@ use grozzzny\lang\models\Lang;
 
 class LangUrlManager extends UrlManager
 {
+    /**
+     * @return string | Lang
+     */
+    protected static function classLang()
+    {
+        return Lang::className();
+    }
+
     public function createUrl($params)
     {
+        $classLang = static::classLang();
+
         if (isset($params['lang_id'])) {
             //Если указан идентификатор языка, то делаем попытку найти язык в БД,
             //иначе работаем с языком по умолчанию
-            $lang = Lang::findOne($params['lang_id']);
+            $lang = $classLang::findOne($params['lang_id']);
             if ($lang === null) {
-                $lang = Lang::getDefaultLang();
+                $lang = $classLang::getDefaultLang();
             }
             unset($params['lang_id']);
         } else {
             //Если не указан параметр языка, то работаем с текущим языком
-            $lang = Lang::getCurrent();
+            $lang = $classLang::getCurrent();
         }
 
         //Получаем сформированный URL(без префикса идентификатора языка)
         $url = parent::createUrl($params);
 
-        $lang_url = Lang::getDefaultLang()->url == $lang->url ? '' : $lang->url;
+        $lang_url = $classLang::getDefaultLang()->url == $lang->url ? '' : $lang->url;
 
         if($url == '/') {
             return '/' . $lang_url;

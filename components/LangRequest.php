@@ -10,6 +10,14 @@ class LangRequest extends Request
 {
     private $_lang_url;
 
+    /**
+     * @return string | Lang
+     */
+    protected static function classLang()
+    {
+        return Lang::className();
+    }
+
     public function getLangUrl()
     {
         if ($this->_lang_url === null) {
@@ -19,12 +27,13 @@ class LangRequest extends Request
 
             $lang_url = isset($url_list[1]) ? $url_list[1] : null;
 
-            Lang::setCurrent($lang_url);
+            $classLang = static::classLang();
+            $classLang::setCurrent($lang_url);
 
-            if( $lang_url !== null && $lang_url === Lang::getCurrent()->url &&
-                strpos($this->_lang_url, Lang::getCurrent()->url) === 1 )
+            if( $lang_url !== null && $lang_url === $classLang::getCurrent()->url &&
+                strpos($this->_lang_url, $classLang::getCurrent()->url) === 1 )
             {
-                $this->_lang_url = substr($this->_lang_url, strlen(Lang::getCurrent()->url)+1);
+                $this->_lang_url = substr($this->_lang_url, strlen($classLang::getCurrent()->url)+1);
             }
         }
 
