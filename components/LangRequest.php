@@ -6,6 +6,12 @@ use yii\base\InvalidConfigException;
 use yii\web\Request;
 use grozzzny\lang\models\Lang;
 
+/**
+ * Class LangRequest
+ * @package grozzzny\lang\components
+ *
+ * @property-read string $langUrl
+ */
 class LangRequest extends Request
 {
     private $_lang_url;

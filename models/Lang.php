@@ -2,6 +2,7 @@
 
 namespace grozzzny\lang\models;
 
+use app\components\LangRequest;
 use Yii;
 
 /**
@@ -115,6 +116,9 @@ class Lang extends \yii\db\ActiveRecord
 
     public function getLink()
     {
-        return '/' . $this->url . Yii::$app->getRequest()->getLangUrl();
+        /* @var \grozzzny\lang\components\LangRequest $request */
+        $request = Yii::$app->request;
+        $langUrl = empty($request->langUrl) ? '/' : $request->langUrl;
+        return static::getDefaultLang()->url === $this->url ? $langUrl : '/' . $this->url . $langUrl;
     }
 }
